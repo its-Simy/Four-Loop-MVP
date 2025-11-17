@@ -1,0 +1,25 @@
+# Node / Next artifacts
+node_modules/
+.pnp/
+.next/
+.turbo/
+dist/
+out/
+build/
+
+# Logs / caches
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.eslintcache
+
+# Env files (keep secrets out of git)
+.env
+.env.*
+
+# TypeScript / editor noise
+*.tsbuildinfo
+.DS_Store
+.idea/
+.vscode/
