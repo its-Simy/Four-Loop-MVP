@@ -1,8 +1,7 @@
 "use client";
 
-import { Bell, Menu, Search } from 'lucide-react';
+import { Bell, Menu } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { UserMenu } from "./user-menu";
 
 interface TopNavProps {
@@ -28,17 +27,6 @@ export function TopNav({ onMenuClick }: TopNavProps) {
           <span className="text-xl font-bold text-white hidden sm:inline">
             Customer Discovery
           </span>
-        </div>
-
-        <div className="flex-1 max-w-xl mx-4">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-            <Input
-              type="search"
-              placeholder="Search leads, interviews, insights..."
-              className="pl-10 bg-gray-800 border-gray-700 text-white placeholder:text-gray-500"
-            />
-          </div>
         </div>
 
         {/* Right section */}

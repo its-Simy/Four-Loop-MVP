@@ -23,7 +23,7 @@ const navigation = [
   { name: "Projects", href: "/dashboard/projects", icon: FolderKanban },
   { name: "Leads", href: "/dashboard/leads", icon: Users },
   { name: "Interviews", href: "/dashboard/interviews", icon: MessageSquare },
-  { name: "Reports", href: "/dashboard/reports", icon: BarChart3 },
+  { name: "Reports & Analytics", href: "/dashboard/reports", icon: BarChart3 },
   { name: "Settings", href: "/dashboard/settings", icon: Settings },
 ];
 
