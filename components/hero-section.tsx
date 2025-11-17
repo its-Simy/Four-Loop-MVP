@@ -62,7 +62,7 @@ export function HeroSection() {
 
         {/* Subheading */}
         <p className="text-base sm:text-xl md:text-2xl text-white text-balance max-w-sm sm:max-w-3xl mx-auto mb-8 sm:mb-12 leading-relaxed px-4 sm:px-0 animate-fade-in-subheading font-light">
-          Four Loop helps Irish businesses save time and boost revenue with smart chat, workflows and automations, fully
+          Four Loop helps businesses save time and boost revenue with smart chat, workflows and automations, fully
           managed for you.
         </p>
 
