@@ -1,6 +1,4 @@
-import { redirect } from 'next/navigation';
-import { createClient } from "@/lib/supabase/server";
-import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
+import { redirect } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Users, MessageSquare, Lightbulb } from 'lucide-react';
@@ -8,25 +6,15 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { AnalyzeInsightsButton } from "@/components/ai/analyze-insights-button";
 import { AIAssistantPanel } from "@/components/ai/ai-assistant-panel";
+import { getDashboardSession } from "@/lib/dashboard/session";
 
 export default async function ProjectDetailPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }) {
-  const { id } = await params;
-  const supabase = await createClient();
-
-  const { data: { user }, error } = await supabase.auth.getUser();
-  if (error || !user) {
-    redirect("/auth/login");
-  }
-
-  const { data: projects } = await supabase
-    .from("projects")
-    .select("*")
-    .eq("user_id", user.id)
-    .order("created_at", { ascending: false });
+  const { id } = params;
+  const { supabase } = await getDashboardSession();
 
   const { data: project } = await supabase
     .from("projects")
@@ -49,7 +37,7 @@ export default async function ProjectDetailPage({
   ]);
 
   return (
-    <DashboardLayout projects={projects || []}>
+    <>
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
@@ -151,6 +139,6 @@ export default async function ProjectDetailPage({
           problemStatement: project.problem_statement || undefined,
         }}
       />
-    </DashboardLayout>
+    </>
   );
 }

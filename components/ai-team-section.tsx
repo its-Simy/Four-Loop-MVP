@@ -3,7 +3,18 @@
 import { useState, useEffect, useRef } from "react"
 import { MessageCircle, Clock, Zap } from "lucide-react"
 
-const conversations = [
+type ConversationMessage = {
+  text: string
+  sender: "customer" | "ai"
+  delay?: number
+}
+
+type Conversation = {
+  title: string
+  messages: ConversationMessage[]
+}
+
+const conversations: Conversation[] = [
   {
     title: "Luxury Sedan Inquiry & Test Drive Booking",
     messages: [
@@ -98,13 +109,13 @@ const conversations = [
 ]
 
 export function AITeamSection() {
-  const sectionRef = useRef<HTMLElement>(null) // Added section ref for intersection observer
+  const sectionRef = useRef<HTMLElement | null>(null) // Added section ref for intersection observer
   const [isVisible, setIsVisible] = useState(false)
   const [currentConversation, setCurrentConversation] = useState(0)
-  const [displayedMessages, setDisplayedMessages] = useState<any[]>([])
+  const [displayedMessages, setDisplayedMessages] = useState<ConversationMessage[]>([])
   const [isTyping, setIsTyping] = useState(false)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
-  const chatContainerRef = useRef<HTMLDivElement>(null)
+  const chatContainerRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     const observer = new IntersectionObserver(

@@ -37,12 +37,12 @@ export function TestimonialsSection() {
       role: "Business Owner",
     },
     {
-      text: "We spend so much less time thinking about lead response because of the instant engagement Cliste offers us.",
+      text: "We spend so much less time thinking about lead response because of the instant engagement Four Loop offers us.",
       name: "Sarah Chen",
       role: "Sales Manager",
     },
     {
-      text: "With Cliste, our conversion rates increased by 85% and boosted our weekend revenue by 40%.",
+      text: "With Four Loop, our conversion rates increased by 85% and boosted our weekend revenue by 40%.",
       name: "Michael Torres",
       role: "General Manager",
     },
@@ -52,7 +52,7 @@ export function TestimonialsSection() {
       role: "Operations Director",
     },
     {
-      text: "Customer satisfaction scores improved dramatically since implementing Cliste. Clients love the instant responses and personalized recommendations.",
+      text: "Customer satisfaction scores improved dramatically since implementing Four Loop. Clients love the instant responses and personalized recommendations.",
       name: "David Kim",
       role: "Customer Experience Manager",
     },
@@ -62,7 +62,7 @@ export function TestimonialsSection() {
       role: "Store Manager",
     },
     {
-      text: "Property inquiries are handled instantly now. We've closed 3x more deals since implementing Cliste's AI assistant.",
+      text: "Property inquiries are handled instantly now. We've closed 3x more deals since implementing Four Loop's AI assistant.",
       name: "James Wilson",
       role: "Real Estate Broker",
     },

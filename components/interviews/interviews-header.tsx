@@ -26,8 +26,8 @@ export function InterviewsHeader({ projects, leads }: InterviewsHeaderProps) {
     <>
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Interviews</h1>
-          <p className="text-gray-600 mt-1">Schedule and manage customer discovery interviews</p>
+          <h1 className="text-3xl font-bold text-white">Interviews</h1>
+          <p className="text-white/80 mt-1">Schedule and manage customer discovery interviews</p>
         </div>
         <div className="flex items-center gap-3">
           <Button onClick={() => setIsScheduleDialogOpen(true)}>

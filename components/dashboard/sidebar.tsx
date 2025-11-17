@@ -1,11 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from "next/navigation";
 import { LayoutDashboard, FolderKanban, Users, MessageSquare, BarChart3, Settings, Plus, ChevronRight, X } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CreateProjectDialog } from "./create-project-dialog";
 
 interface SidebarProps {
@@ -29,8 +29,21 @@ const navigation = [
 
 export function Sidebar({ isOpen, projects, onClose }: SidebarProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const [showProjects, setShowProjects] = useState(true);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+
+  useEffect(() => {
+    navigation.forEach((item) => {
+      router.prefetch?.(item.href);
+    });
+  }, [router]);
+
+  useEffect(() => {
+    projects.slice(0, 5).forEach((project) => {
+      router.prefetch?.(`/dashboard/projects/${project.id}`);
+    });
+  }, [projects, router]);
 
   return (
     <>
