@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -40,8 +40,57 @@ interface WorkspaceDirectoryProps {
 
 export function WorkspaceDirectory({ projects, leads, insights }: WorkspaceDirectoryProps) {
   const [query, setQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<{
+    projects: DirectoryProject[];
+    leads: DirectoryLead[];
+    insights: DirectoryInsight[];
+  } | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const normalizedQuery = query.trim().toLowerCase();
+
+  useEffect(() => {
+    if (!normalizedQuery) {
+      setSearchResults(null);
+      setError(null);
+      setLoading(false);
+      return;
+    }
+
+    const controller = new AbortController();
+
+    const runSearch = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await fetch(
+          `/api/search?q=${encodeURIComponent(normalizedQuery)}`,
+          { signal: controller.signal },
+        );
+        if (!response.ok) {
+          throw new Error(`Search failed with status ${response.status}`);
+        }
+        const data = await response.json();
+        setSearchResults({
+          projects: data.projects ?? [],
+          leads: data.leads ?? [],
+          insights: data.insights ?? [],
+        });
+      } catch (err) {
+        if ((err as Error).name === "AbortError") return;
+        console.error("Search request failed", err);
+        setError("Search failed. Please try again.");
+        setSearchResults(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    runSearch();
+
+    return () => controller.abort();
+  }, [normalizedQuery]);
 
   const filteredProjects = useMemo(() => {
     if (!normalizedQuery) return projects;
@@ -67,6 +116,10 @@ export function WorkspaceDirectory({ projects, leads, insights }: WorkspaceDirec
     });
   }, [insights, normalizedQuery]);
 
+  const projectsToDisplay = searchResults?.projects ?? filteredProjects;
+  const leadsToDisplay = (searchResults?.leads ?? filteredLeads).slice(0, 8);
+  const insightsToDisplay = (searchResults?.insights ?? filteredInsights).slice(0, 6);
+
   return (
     <section className="space-y-6 rounded-3xl border border-white/10 bg-slate-950/50 p-6 shadow-lg backdrop-blur">
       <header className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
@@ -88,6 +141,12 @@ export function WorkspaceDirectory({ projects, leads, insights }: WorkspaceDirec
           className="h-12 border-white/20 bg-white/[0.06] pl-11 text-white placeholder:text-slate-400"
         />
       </div>
+      {loading && (
+        <p className="text-sm text-slate-400">Searching your workspace…</p>
+      )}
+      {error && (
+        <p className="text-sm text-red-400">{error}</p>
+      )}
 
       <div className="grid gap-4 lg:grid-cols-3">
         <Card className="border-white/10 bg-white/5 text-white">
@@ -101,16 +160,18 @@ export function WorkspaceDirectory({ projects, leads, insights }: WorkspaceDirec
           <CardContent className="space-y-3">
             <ScrollArea className="max-h-64">
               <div className="space-y-3 pr-3">
-                {filteredProjects.length === 0 && (
+                {projectsToDisplay.length === 0 && (
                   <p className="text-sm text-slate-400">No projects match this search.</p>
                 )}
-                {filteredProjects.map((project) => (
+                {projectsToDisplay.map((project) => (
                   <div
                     key={project.id}
                     className="rounded-2xl border border-white/10 bg-white/5 p-3"
                   >
                     <div className="flex items-center justify-between">
-                      <h3 className="font-medium">{project.name}</h3>
+                      <h3 className="font-medium">
+                        {project.name || (project as any).title || "Untitled project"}
+                      </h3>
                       {project.status && (
                         <span className="rounded-full bg-blue-500/10 px-2 py-0.5 text-xs text-blue-200">
                           {project.status}
@@ -120,8 +181,10 @@ export function WorkspaceDirectory({ projects, leads, insights }: WorkspaceDirec
                     {project.target_market && (
                       <p className="mt-1 text-xs text-slate-300">Target: {project.target_market}</p>
                     )}
-                    {project.description && (
-                      <p className="mt-1 text-sm text-slate-200 line-clamp-2">{project.description}</p>
+                    {(project.description || (project as any).overview) && (
+                      <p className="mt-1 text-sm text-slate-200 line-clamp-2">
+                        {project.description || (project as any).overview}
+                      </p>
                     )}
                   </div>
                 ))}
@@ -141,20 +204,20 @@ export function WorkspaceDirectory({ projects, leads, insights }: WorkspaceDirec
           <CardContent>
             <ScrollArea className="max-h-64">
               <div className="space-y-3 pr-3">
-                {filteredLeads.length === 0 && (
+                {leadsToDisplay.length === 0 && (
                   <p className="text-sm text-slate-400">No contacts match this search.</p>
                 )}
-                {filteredLeads.map((lead) => (
+                {leadsToDisplay.map((lead) => (
                   <div
                     key={lead.id}
                     className="rounded-2xl border border-white/10 bg-white/5 p-3"
                   >
                     <p className="text-base font-medium">
-                      {lead.name || "Unnamed contact"}
+                      {lead.name || (lead as any).title || "Unnamed contact"}
                     </p>
                     <p className="text-sm text-slate-300">
-                      {lead.title ? `${lead.title} · ` : ""}
-                      {lead.company || "Unknown org"}
+                      {lead.title || (lead as any).job || ""}{" "}
+                      {lead.company || (lead as any).studio || "Unknown org"}
                     </p>
                     {lead.email && (
                       <p className="text-xs text-slate-400 mt-1">{lead.email}</p>
@@ -182,20 +245,20 @@ export function WorkspaceDirectory({ projects, leads, insights }: WorkspaceDirec
           <CardContent>
             <ScrollArea className="max-h-64">
               <div className="space-y-3 pr-3">
-                {filteredInsights.length === 0 && (
+                {insightsToDisplay.length === 0 && (
                   <p className="text-sm text-slate-400">No insights for this query.</p>
                 )}
-                {filteredInsights.map((insight) => (
+                {insightsToDisplay.map((insight) => (
                   <div
                     key={insight.id}
                     className="rounded-2xl border border-white/10 bg-white/5 p-3"
                   >
                     <p className="text-sm font-medium">
-                      {insight.insight_title || "Untitled insight"}
+                      {insight.insight_title || (insight as any).title || (insight as any).name || "Untitled insight"}
                     </p>
-                    {insight.summary && (
+                    {(insight.summary || (insight as any).overview || (insight as any).description) && (
                       <p className="mt-1 text-sm text-slate-200 line-clamp-2">
-                        {insight.summary}
+                        {insight.summary || (insight as any).overview || (insight as any).description}
                       </p>
                     )}
                     {insight.category && (

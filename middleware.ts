@@ -1,7 +1,12 @@
 import { updateSession } from "@/lib/supabase/middleware";
-import { type NextRequest } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 
 export async function middleware(request: NextRequest) {
+  // Allow unauthenticated access to the search API for testing and UI calls.
+  if (request.nextUrl.pathname.startsWith("/api/search")) {
+    return NextResponse.next();
+  }
+
   return await updateSession(request);
 }
 

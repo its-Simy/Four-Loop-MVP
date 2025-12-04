@@ -1,0 +1,37 @@
+[
+  {
+    "id": "lead_jane",
+    "name": "Jane Doe",
+    "company": "SunEdge Labs",
+    "email": "jane@sunedge.io",
+    "title": "Lead Engineer",
+    "industry": "Clean Tech",
+    "project_id": "proj_solar_roof"
+  },
+  {
+    "id": "lead_malik",
+    "name": "Malik Chen",
+    "company": "VoltGrid",
+    "email": "malik@voltgrid.com",
+    "title": "Director of Ops Analytics",
+    "industry": "Energy Ops",
+    "project_id": "proj_grid_ai"
+  },
+  {
+    "id": "lead_rhea",
+    "name": "Rhea Collins",
+    "company": "MetroLabs",
+    "email": "rhea@metrolabs.io",
+    "title": "Ops Modernization PM",
+    "industry": "Mobility",
+    "project_id": "proj_mobility_copilot"
+  },
+  {
+    "id": "lead_ciara",
+    "name": "Ciara Dempsey",
+    "company": "BlueMarble Freight",
+    "email": "ciara@bluemarble.ai",
+    "title": "Ops Strategy Lead",
+    "industry": "Logistics"
+  }
+]
