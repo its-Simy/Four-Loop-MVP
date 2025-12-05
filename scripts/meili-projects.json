@@ -1,0 +1,47 @@
+[
+  {
+    "id": "proj_solar_roof",
+    "name": "Solar Roof V2",
+    "description": "High-efficiency solar tiles with integrated inverter monitoring.",
+    "category": "Clean Tech",
+    "target_market": "Residential installers",
+    "status": "active",
+    "author": {
+      "id": "lead_jane",
+      "name": "Jane Doe",
+      "role": "Lead Engineer",
+      "company": "SunEdge Labs",
+      "email": "jane@sunedge.io"
+    }
+  },
+  {
+    "id": "proj_grid_ai",
+    "name": "GridSense AI",
+    "description": "Predictive dispatching for field ops and outage response.",
+    "category": "Energy Ops",
+    "target_market": "Utilities",
+    "status": "active",
+    "author": {
+      "id": "lead_malik",
+      "name": "Malik Chen",
+      "role": "Director of Ops Analytics",
+      "company": "VoltGrid",
+      "email": "malik@voltgrid.com"
+    }
+  },
+  {
+    "id": "proj_mobility_copilot",
+    "name": "Mobility Copilot",
+    "description": "AI copilot for fleet maintenance and route optimization.",
+    "category": "Mobility",
+    "target_market": "Fleet operators",
+    "status": "pilot",
+    "author": {
+      "id": "lead_rhea",
+      "name": "Rhea Collins",
+      "role": "Ops Modernization PM",
+      "company": "MetroLabs",
+      "email": "rhea@metrolabs.io"
+    }
+  }
+]

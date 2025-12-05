@@ -1,0 +1,50 @@
+[
+  {
+    "id": "insight_solar_payback",
+    "insight_title": "Solar install payback window",
+    "summary": "Installers prioritize payback under 5 years; AI sizing cuts design time 22%.",
+    "category": "Buying signal",
+    "project_id": "proj_solar_roof",
+    "author": {
+      "id": "lead_jane",
+      "name": "Jane Doe",
+      "role": "Lead Engineer"
+    }
+  },
+  {
+    "id": "insight_outage_dispatch",
+    "insight_title": "Outage dispatch triggers",
+    "summary": "Utilities reward AI that reduces truck rolls per incident from 2.1 to 1.4.",
+    "category": "KPI",
+    "project_id": "proj_grid_ai",
+    "author": {
+      "id": "lead_malik",
+      "name": "Malik Chen",
+      "role": "Director of Ops Analytics"
+    }
+  },
+  {
+    "id": "insight_route_reliability",
+    "insight_title": "Route reliability matters most",
+    "summary": "Fleet ops value on-time % over fuel savings when adopting copilots.",
+    "category": "Priority",
+    "project_id": "proj_mobility_copilot",
+    "author": {
+      "id": "lead_rhea",
+      "name": "Rhea Collins",
+      "role": "Ops Modernization PM"
+    }
+  },
+  {
+    "id": "insight_change_enablement",
+    "insight_title": "Change management risk",
+    "summary": "Teams with dispatcher champions cut rollout time by 30%.",
+    "category": "Risk",
+    "project_id": "proj_grid_ai",
+    "author": {
+      "id": "lead_ciara",
+      "name": "Ciara Dempsey",
+      "role": "Ops Strategy Lead"
+    }
+  }
+]

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import {
   Table,
@@ -107,7 +108,14 @@ export function LeadsTable({ leads }: LeadsTableProps) {
             <TableBody>
               {filteredLeads.map((lead) => (
                 <TableRow key={lead.id} className="border-white/10 hover:bg-gray-700/30">
-                  <TableCell className="font-medium text-white">{lead.name}</TableCell>
+                <TableCell className="font-medium text-white">
+                  <Link
+                    href={`/users/${lead.id}`}
+                    className="text-blue-400 hover:text-blue-300"
+                  >
+                    {lead.name}
+                  </Link>
+                </TableCell>
                   <TableCell className="text-gray-300">{lead.company || "-"}</TableCell>
                   <TableCell className="text-gray-300">{lead.title || "-"}</TableCell>
                   <TableCell>
@@ -169,7 +177,9 @@ export function LeadsTable({ leads }: LeadsTableProps) {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem>View Details</DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link href={`/users/${lead.id}`}>View Profile</Link>
+                        </DropdownMenuItem>
                         <DropdownMenuItem>Schedule Interview</DropdownMenuItem>
                         <DropdownMenuItem>Edit</DropdownMenuItem>
                         <DropdownMenuItem className="text-red-600">Delete</DropdownMenuItem>

@@ -28,3 +28,11 @@ Continue building your app on:
 2. Deploy your chats from the v0 interface
 3. Changes are automatically pushed to this repository
 4. Vercel deploys the latest version from this repository
+
+## Meilisearch setup (search integration)
+
+1. Provision Meilisearch (self-host or managed) and note the host URL.
+2. Create keys: keep the master key server-side; create a search-only key for client or API queries.
+3. Add env vars (`MEILI_HOST`, `MEILI_MASTER_KEY`, `MEILI_SEARCH_KEY`) to `.env.local` and your hosting provider.
+4. Use `lib/search/meilisearch-client.ts` from server routes/actions to query or index `projects`, `leads`, and `insights`.
+5. If you’re self-hosting and want a quick local UI to inspect data, open `http://localhost:7700` in your browser. The built-in preview supports plain searches only and no customization.

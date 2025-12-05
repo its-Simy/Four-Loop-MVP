@@ -55,7 +55,6 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
 
       if (error) throw error;
 
-      // Create initial activity
       await supabase.from("activities").insert([
         {
           project_id: data.id,
@@ -79,14 +78,14 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle>Create New Project</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="text-white">Create New Project</DialogTitle>
+          <DialogDescription className="text-white">
             Start a new customer discovery project to organize your research and interviews.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="name">Project Name *</Label>
+            <Label htmlFor="name" className="text-white">Project Name *</Label>
             <Input
               id="name"
               required
@@ -99,7 +98,7 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description" className="text-white">Description</Label>
             <Textarea
               id="description"
               placeholder="Brief description of your project"
@@ -111,7 +110,7 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="target_market">Target Market</Label>
+            <Label htmlFor="target_market" className="text-white">Target Market</Label>
             <Input
               id="target_market"
               placeholder="e.g., Busy professionals aged 25-40"
@@ -123,7 +122,7 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="problem_statement">Problem Statement</Label>
+            <Label htmlFor="problem_statement" className="text-white">Problem Statement</Label>
             <Textarea
               id="problem_statement"
               placeholder="What problem are you trying to solve?"
@@ -135,7 +134,7 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="solution_hypothesis">Solution Hypothesis</Label>
+            <Label htmlFor="solution_hypothesis" className="text-white">Solution Hypothesis</Label>
             <Textarea
               id="solution_hypothesis"
               placeholder="What solution are you proposing?"
