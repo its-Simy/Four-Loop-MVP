@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { Search, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -20,26 +21,41 @@ type Lead = {
   title?: string | null;
 };
 
+type User = {
+  id: string;
+  name: string;
+  company?: string | null;
+  email?: string | null;
+  title?: string | null;
+  focuses?: string[];
+  linkedin_url?: string | null;
+};
+
 type Insight = {
   id: string;
   insight_title?: string | null;
   summary?: string | null;
   category?: string | null;
+  project_id?: string | null;
+  project_name?: string | null;
 };
 
 type WorkspaceSearchProps = {
   projects: Project[];
   leads: Lead[];
+  users: User[];
   insights: Insight[];
 };
 
 type SearchResults = {
   projects: Project[];
   leads: Lead[];
+  users: User[];
   insights: Insight[];
   counts?: {
     projects?: number;
     leads?: number;
+    users?: number;
     insights?: number;
   };
 };
@@ -92,6 +108,7 @@ export function WorkspaceSearch({
         setSearchResults({
           projects: data.projects ?? [],
           leads: data.leads ?? [],
+          users: data.users ?? [],
           insights: data.insights ?? [],
           counts: data.counts ?? {},
         });
@@ -134,7 +151,7 @@ export function WorkspaceSearch({
   const itemsForSelectedPanel = useMemo(() => {
     if (!searchResults || !submittedQuery || !selectedPanel) return [];
     if (selectedPanel === "current-trends") return searchResults.insights ?? [];
-    if (selectedPanel === "current-inventors") return searchResults.leads ?? [];
+    if (selectedPanel === "current-inventors") return searchResults.users ?? [];
     if (selectedPanel === "current-products") return searchResults.projects ?? [];
     return [];
   }, [searchResults, submittedQuery, selectedPanel]);
@@ -207,7 +224,7 @@ export function WorkspaceSearch({
               {error && <span className="text-red-300">{error}</span>}
               {!loading && !error && searchResults?.counts && (
                 <span className="text-slate-400">
-                  {searchResults.counts.leads ?? 0} people · {searchResults.counts.projects ?? 0} projects · {searchResults.counts.insights ?? 0} insights
+                  {searchResults.counts.users ?? 0} people · {searchResults.counts.projects ?? 0} projects · {searchResults.counts.insights ?? 0} insights
                 </span>
               )}
             </div>
@@ -240,7 +257,7 @@ export function WorkspaceSearch({
                     <div className="flex items-center justify-between text-sm text-white/80">
                       <span>
                         {panel.key === "current-trends" && `${searchResults?.counts?.insights ?? 0} insights`}
-                        {panel.key === "current-inventors" && `${searchResults?.counts?.leads ?? 0} people`}
+                        {panel.key === "current-inventors" && `${searchResults?.counts?.users ?? 0} people`}
                         {panel.key === "current-products" && `${searchResults?.counts?.projects ?? 0} projects`}
                       </span>
                       <span
@@ -264,54 +281,62 @@ export function WorkspaceSearch({
                   )}
                   {itemsForSelectedPanel.length > 0 && selectedPanel === "current-inventors" && (
                     <div className="grid gap-3 md:grid-cols-3">
-                      {itemsForSelectedPanel.map((lead) => (
-                        <div
-                          key={(lead as Lead).id}
-                          className="rounded-xl border border-white/10 bg-white/5 p-3 text-sm text-slate-200"
+                      {itemsForSelectedPanel.map((user) => (
+                        <Link
+                          key={(user as User).id}
+                          href={`/users/${(user as User).id}`}
+                          className="rounded-xl border border-white/10 bg-white/5 p-3 text-sm text-slate-200 transition hover:border-blue-300/50 hover:bg-white/10"
                         >
                           <p className="text-base font-semibold text-white">
-                            {(lead as Lead).name || "Unknown contact"}
+                            {(user as User).name || "Unknown contact"}
                           </p>
                           <p className="text-slate-300">
-                            {(lead as Lead).title || ""} {(lead as Lead).company || ""}
+                            {(user as User).title || ""} {(user as User).company || ""}
                           </p>
-                          {(lead as Lead).email && (
-                            <p className="text-xs text-slate-400 mt-1">{(lead as Lead).email}</p>
+                          {(user as User).email && (
+                            <p className="text-xs text-slate-400 mt-1">{(user as User).email}</p>
                           )}
-                        </div>
+                          {(user as User).focuses && (user as User).focuses?.length > 0 && (
+                            <p className="text-xs text-blue-200 mt-1 line-clamp-1">
+                              Focus: {(user as User).focuses?.[0]}
+                            </p>
+                          )}
+                        </Link>
                       ))}
                     </div>
                   )}
                   {itemsForSelectedPanel.length > 0 && selectedPanel === "current-products" && (
                     <div className="grid gap-3 md:grid-cols-3">
                       {itemsForSelectedPanel.map((project) => (
-                        <div
+                        <Link
                           key={(project as Project).id}
-                          className="rounded-xl border border-white/10 bg-white/5 p-3 text-sm text-slate-200"
+                          href={`/projects/${(project as Project).id}`}
+                          className="rounded-xl border border-white/10 bg-white/5 p-3 text-sm text-white transition hover:border-blue-300/50 hover:bg-white/10"
                         >
                           <p className="text-base font-semibold text-white">
                             {(project as Project).name || (project as any).title || "Untitled"}
                           </p>
                           {((project as Project).description || (project as any).overview) && (
-                            <p className="mt-1 text-slate-300 line-clamp-2">
+                            <p className="mt-1 text-white line-clamp-2">
                               {(project as Project).description || (project as any).overview}
                             </p>
                           )}
                           {(project as Project).target_market && (
-                            <p className="mt-1 text-xs text-blue-200">
+                            <p className="mt-1 text-xs text-white">
                               Target: {(project as Project).target_market}
                             </p>
                           )}
-                        </div>
+                        </Link>
                       ))}
                     </div>
                   )}
                   {itemsForSelectedPanel.length > 0 && selectedPanel === "current-trends" && (
                     <div className="grid gap-3 md:grid-cols-3">
                       {itemsForSelectedPanel.map((insight) => (
-                        <div
+                        <Link
                           key={(insight as Insight).id}
-                          className="rounded-xl border border-white/10 bg-white/5 p-3 text-sm text-slate-200"
+                          href={`/insights/${(insight as Insight).id}`}
+                          className="rounded-xl border border-white/10 bg-white/5 p-3 text-sm text-slate-200 transition hover:border-blue-300/50 hover:bg-white/10"
                         >
                           <p className="text-base font-semibold text-white">
                             {(insight as Insight).insight_title || (insight as any).title || "Untitled insight"}
@@ -324,7 +349,12 @@ export function WorkspaceSearch({
                               Category: {(insight as Insight).category}
                             </p>
                           )}
-                        </div>
+                          {(insight as Insight).project_name || (insight as Insight).project_id ? (
+                            <p className="mt-1 text-xs text-slate-400">
+                              Project: {(insight as Insight).project_name || (insight as Insight).project_id}
+                            </p>
+                          ) : null}
+                        </Link>
                       ))}
                     </div>
                   )}

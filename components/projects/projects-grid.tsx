@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -11,6 +12,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { createClient } from "@/lib/supabase/client";
+import { useRouter } from "next/navigation";
 
 interface Project {
   id: string;
@@ -29,6 +32,26 @@ interface ProjectsGridProps {
 }
 
 export function ProjectsGrid({ projects }: ProjectsGridProps) {
+  const router = useRouter();
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+
+  const handleDelete = async (projectId: string, projectName: string) => {
+    if (!confirm(`Delete project "${projectName}"? This cannot be undone.`)) return;
+    try {
+      setDeletingId(projectId);
+      const supabase = createClient();
+      const { error } = await supabase.from("projects").delete().eq("id", projectId);
+      if (error) {
+        console.error("Failed to delete project", error);
+        alert("Could not delete project. Please try again.");
+      } else {
+        router.refresh();
+      }
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {projects.map((project) => (
@@ -50,7 +73,15 @@ export function ProjectsGrid({ projects }: ProjectsGridProps) {
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem>Edit</DropdownMenuItem>
                   <DropdownMenuItem>Archive</DropdownMenuItem>
-                  <DropdownMenuItem className="text-red-600">Delete</DropdownMenuItem>
+                  <DropdownMenuItem
+                    className="text-red-600"
+                    onSelect={(e) => {
+                      e.preventDefault();
+                      handleDelete(project.id, project.name);
+                    }}
+                  >
+                    {deletingId === project.id ? "Deleting..." : "Delete"}
+                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>

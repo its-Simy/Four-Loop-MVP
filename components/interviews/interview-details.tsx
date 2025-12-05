@@ -35,11 +35,11 @@ export function InterviewDetails({ interview }: InterviewDetailsProps) {
       <div className="flex items-center justify-between">
         <div>
           <div className="flex items-center gap-3 mb-2">
-            <h1 className="text-3xl font-bold text-gray-900">{interview.title}</h1>
+            <h1 className="text-3xl font-bold text-white">{interview.title}</h1>
             <Badge variant="secondary">{interview.status}</Badge>
             <Badge variant="outline">{interview.interview_type.replace('_', ' ')}</Badge>
           </div>
-          <Button variant="link" className="pl-0" asChild>
+          <Button variant="link" className="pl-0 text-white" asChild>
             <Link href="/dashboard/interviews">← Back to Interviews</Link>
           </Button>
         </div>
@@ -150,7 +150,7 @@ export function InterviewDetails({ interview }: InterviewDetailsProps) {
               )}
 
               <Button asChild variant="outline" className="w-full mt-4">
-                <Link href={`/dashboard/leads?id=${interview.leads.id}`}>
+                <Link href={`/users/${interview.leads.id}`}>
                   View Full Profile
                 </Link>
               </Button>
